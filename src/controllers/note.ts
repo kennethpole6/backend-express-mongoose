@@ -1,4 +1,4 @@
-import { RequestHandler,  } from "express"
+import { RequestHandler } from "express"
 import note from "../model/note"
 import createHttpError from "http-errors"
 import mongoose from "mongoose"
@@ -27,7 +27,6 @@ export const getNotesId: RequestHandler = async (req, res, next) => {
             throw createHttpError(400, "Invalid Id")
         }
         const data = await note.findById(id).exec()
-        console.log(data, "Data")
         if (!data) {
             throw createHttpError(404, "Note not found")
         }
