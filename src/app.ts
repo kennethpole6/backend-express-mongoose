@@ -1,5 +1,5 @@
 import "dotenv/config"
-import express, { NextFunction, Request, Response } from "express"
+import express, {  Request, Response } from "express"
 import notesRoutes from "./routes/note"
 import registerRoutes from "./routes/register"
 import loginRoutes from "./routes/login"
@@ -24,7 +24,6 @@ app.use(express.urlencoded({ extended: true }))
 
 //routes
 app.use("/api/notes", notesRoutes)
-app.use("/api/users", userRoutes)
 app.use("/api/register", registerRoutes)
 app.use("/api/login", loginRoutes)
 
@@ -34,7 +33,7 @@ app.use((req, res, next) => {
 })
 
 //error handler
-app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
+app.use((error: unknown, req: Request, res: Response) => {
     console.error(error)
     let statusCode = 500
     let errorMessage = "An unknown error occurred"

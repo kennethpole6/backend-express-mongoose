@@ -6,9 +6,9 @@ import jwt from "jsonwebtoken";
 
 export const checkBearerAuthorization: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
     const bearerToken = req.headers.authorization
+    console.log(bearerToken, "token")
+    const validate = await jwt.verify(`${bearerToken}`, env.TOKEN_SECRET)
 
-    const validate = await jwt.verify(bearerToken as string, env.TOKEN_SECRET)
-    console.log(validate, "validate")
 
     if (!validate) {
         return next(createHttpError(401, "Unauthorized"));
