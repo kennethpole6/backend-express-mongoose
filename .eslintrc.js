@@ -3,6 +3,11 @@ module.exports = {
     node: true,
     es2021: true,
   },
+  rules: {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+  },
   extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   overrides: [
     {
@@ -21,8 +26,4 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["@typescript-eslint"],
-  rules: {
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "error",
-  },
 };

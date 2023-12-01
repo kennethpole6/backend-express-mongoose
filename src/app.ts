@@ -1,20 +1,15 @@
 import "dotenv/config"
 import express, {  Request, Response } from "express"
 import notesRoutes from "./routes/note"
-import registerRoutes from "./routes/register"
 import loginRoutes from "./routes/login"
+import userRoutes from "./routes/user"
 import morgan from "morgan"
 import createHttpError, { isHttpError } from "http-errors"
 import cors from "cors"
-// import { checkBearerAuthorization } from "./auth/auth"
 
 const app = express()
-
 app.use(cors())
-
 app.use(morgan("dev"))
-
-// app.use(checkBearerAuthorization)
 
 //accept json request and response
 app.use(express.json())
@@ -24,8 +19,9 @@ app.use(express.urlencoded({ extended: true }))
 
 //routes
 app.use("/api/notes", notesRoutes)
-app.use("/api/register", registerRoutes)
 app.use("/api/login", loginRoutes)
+app.use("/api/user", userRoutes)
+
 
 //if no routes is defined
 app.use((req, res, next) => {

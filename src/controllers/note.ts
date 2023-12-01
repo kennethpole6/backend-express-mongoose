@@ -56,6 +56,10 @@ export const createNotes: RequestHandler<unknown, unknown, Note, unknown> = asyn
 export const updateNotes: RequestHandler = async (req, res, next) => {
     const id = req.params.id
     try {
+        if(!mongoose.isValidObjectId(id)) {
+            throw createHttpError(400, "Invalid Id")
+        }
+        
         const updatedNote = await note.findByIdAndUpdate(id, req.body, { new: true }).exec()
         res.status(200).json(updatedNote)
     } catch (error) {
@@ -67,7 +71,11 @@ export const updateNotes: RequestHandler = async (req, res, next) => {
 export const deleteNotes: RequestHandler = async (req, res, next) => {
     const id = req.params.id
     try {
+        if (!mongoose.isValidObjectId(id)) {
+            throw createHttpError(400, "Invalid Id")
+        }
         await note.findByIdAndDelete(id).exec()
+
         res.status(200).json({ message: "Deleted Successfully" })
     } catch (error) {
         next(error)
