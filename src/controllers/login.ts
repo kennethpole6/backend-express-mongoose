@@ -9,8 +9,8 @@ export const login: RequestHandler<unknown, unknown, UserRequestBody, unknown> =
     const { username, password } = req.body
 
     try {
-        if (!username) {
-            throw createHttpError(400, "Email is required")
+        if (!username || !password) {
+            throw createHttpError(400, "Parameters missing")
         }
         const user = await Usermodel.findOne({ username })
         //check if the user is not found
@@ -21,23 +21,24 @@ export const login: RequestHandler<unknown, unknown, UserRequestBody, unknown> =
         const hashPassword = await compare(password, user.password)
         
         if(!hashPassword){
-            throw createHttpError(400, "Invalid password.")
+            throw createHttpError(400, "Invalid credentials.")
         }
         
-        const payload = {
-            id: user?.id,
-            email: user?.email,
-            username: user?.username
-        }
-        //generate a token if the user is found
-        const accessToken = generateToken(payload)
+        // const payload = {
+        //     id: user?.id,
+        //     email: user?.email,
+        //     username: user?.username
+        // }
+        //setting a cookie in the browser
+        // const accessToken = generateToken(payload)
+        // res.cookie("token", accessToken, {
+        //     httpOnly: true,
+        //     maxAge: 1000 * 60 * 15,
+        //     signed: true,
+        // })
 
-        //setting a cookie to the browser
-        res.cookie("token", accessToken, {
-            httpOnly: true,
-            maxAge: 1000 * 60 * 15,
-            signed: true,
-        })
+        //setting a cookie in session
+        req.session.userId = user?._id
         return res.status(200).json({ message: "Login successful" })
     } catch (error) {
         next(error)

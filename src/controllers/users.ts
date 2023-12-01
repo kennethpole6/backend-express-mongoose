@@ -9,6 +9,22 @@ export type UserRequestBody = {
     username: string
     password: string
 }
+
+//get authenticated user by session
+export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
+    const authenticatedUserId = req.session.userId
+    try {
+        if(!authenticatedUserId) {
+            throw createHttpError(401, "Unauthorized")
+        }
+        const user = await userModel.findById(authenticatedUserId).select("+email").exec()
+        res.status(200).json(user)
+    } catch (error) {
+        next(error)
+    }
+
+}
+
 //sign up users
 export const signUp: RequestHandler<unknown, unknown, UserRequestBody, unknown> = async  (req, res, next) => {
     const username = req.body.username
@@ -94,3 +110,5 @@ export const deleteUsers: RequestHandler = async (req, res, next) => {
         next(error)
     }
 }
+
+

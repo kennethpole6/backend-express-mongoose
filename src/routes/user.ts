@@ -1,14 +1,14 @@
 import  * as SignUpController  from "../controllers/users";
 import express from "express";
-import { verifyToken } from "../controllers/verifytoken";
+import { requiresAuth } from "../middleware/auth";
 
 const router = express.Router();
 
-router.get("/", verifyToken, SignUpController.getUsers);
-router.get("/:id", verifyToken, SignUpController.getUserId);
-router.post("/", verifyToken, SignUpController.signUp);
-router.patch("/:id", verifyToken, SignUpController.updateUser);
-router.delete("/:id", verifyToken, SignUpController.deleteUsers);
+router.get("/", requiresAuth, SignUpController.getUsers);
+router.get("/:id", requiresAuth, SignUpController.getUserId);
+router.post("/", requiresAuth, SignUpController.signUp);
+router.patch("/:id", requiresAuth, SignUpController.updateUser);
+router.delete("/:id", requiresAuth, SignUpController.deleteUsers);
 
 
 export default router;

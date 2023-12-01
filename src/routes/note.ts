@@ -1,13 +1,13 @@
 import * as NoteController from "../controllers/note"
 import express from "express"
-import { verifyToken } from "../controllers/verifytoken"
+import { requiresAuth } from "../middleware/auth"
 
 const router = express.Router()
 
-router.get("/", verifyToken, NoteController.getNotes)
-router.post('/', verifyToken, NoteController.createNotes)
-router.get("/:id", verifyToken, NoteController.getNotesId)
-router.put("/:id", verifyToken, NoteController.updateNotes)
-router.delete("/:id", verifyToken, NoteController.deleteNotes)
+router.get("/", requiresAuth, NoteController.getNotes)
+router.post('/', requiresAuth, NoteController.createNotes)
+router.get("/:id", requiresAuth, NoteController.getNotesId)
+router.put("/:id", requiresAuth, NoteController.updateNotes)
+router.delete("/:id", requiresAuth, NoteController.deleteNotes)
 
 export default router
